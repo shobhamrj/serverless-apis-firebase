@@ -35,36 +35,33 @@ exports.pushToBigQuery = functions.firestore
     const individualId = context.params.individualId;
 
     try {
-      const rows = [
-        {
-          individualId: individualId,
-          name: individual.name,
-          id: individual.id,
-          symptoms: individual.symptoms,
-          dob: individual.dob,
-          hobbies: individual.hobbies,
-          location: Object.values(individual.location).join(','),
-          care_provider_primary_doctor: individual.careProvider.primaryDoctor,
-          care_provider_physical_therapist: individual.careProvider.physicalTherapist,
-          care_provider_neuro_doctor: individual.careProvider.neuroDoctor,
-          care_provider_nanny: individual.careProvider.nanny,
-          care_provider_speech_therapist: individual.careProvider.speechTherapist
-        }
-      ];
+        const location =  Object.values(individual.location).join(',');
+
+        const query =  `INSERT INTO \`first-serverless-firebase-app.individuals.data\` (individualId, id, name, symptoms, dob, hobbies, location, care_provider_primary_doctor, care_provider_physical_therapist, care_provider_neuro_doctor, care_provider_nanny, care_provider_speech_therapist) VALUES ('${individualId}', '${individual.id}', '${individual.name}', '${individual.symptoms}', '${individual.dob}', '${individual.hobbies}', '${location}', '${individual.careProvider.primaryDoctor}',  '${individual.careProvider.physicalTherapist}', '${individual.careProvider.neuroDoctor}', '${individual.careProvider.nanny}', '${individual.careProvider.speechTherapist}')`;
+    //   const rows = {
+    //       individualId: individualId,
+    //       name: individual.name,
+    //       id: individual.id,
+    //       symptoms: individual.symptoms,
+    //       dob: individual.dob,
+    //       hobbies: individual.hobbies,
+    //       care_provider_primary_doctor: individual.careProvider.primaryDoctor,
+    //       care_provider_physical_therapist: individual.careProvider.physicalTherapist,
+    //       care_provider_neuro_doctor: individual.careProvider.neuroDoctor,
+    //       care_provider_nanny: individual.careProvider.nanny,
+    //       care_provider_speech_therapist: individual.careProvider.speechTherapist
+    //     };
+    //     console.log(rows);
 
       const options = {
-        ignoreUnknownValues: true,
-        skipInvalidRows: true
+        query: query
       };
 
-      const [insertErrors] = await bigquery
-        .dataset('individuals')
-        .table('data')
-        .insert(rows, options);
+      const [job] = await bigquery.createQueryJob(options);
 
-      if (insertErrors && insertErrors.length > 0) {
+      if (job && job.length > 0) {
         console.error('Insert errors:');
-        insertErrors.forEach(err => console.error(err));
+        job.forEach(err => console.error(err));
       } else {
         console.log(`Inserted 1 row`);
       }

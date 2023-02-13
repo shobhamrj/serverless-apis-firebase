@@ -1,8 +1,8 @@
 const axios = require('axios');
 const falso = require('@ngneat/falso');
+require('dotenv').config()
 
-
-const API_URL = 'http://127.0.0.1:5001/first-serverless-firebase-app/us-central1/createIndividual';
+const API_URL = process.env.API_URL;
 
 async function createIndividual() {
   const individual = {
@@ -45,7 +45,7 @@ async function createIndividual() {
 }
 
 (async () => {
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 100; i++) {
     await createIndividual();
   }
 })();

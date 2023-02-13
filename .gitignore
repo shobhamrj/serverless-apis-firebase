@@ -64,3 +64,6 @@ build/Release
 
 # dotenv environment variables file
 .env
+
+# python venv
+*/venv
