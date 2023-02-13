@@ -2,7 +2,7 @@
 
 
 
-A serverless firebase function/api that creates a firestore document that contains following data for an individual:
+1. A serverless firebase function/api that creates a firestore document that contains following data for an individual:
 
   a. Name
 
@@ -17,32 +17,21 @@ A serverless firebase function/api that creates a firestore document that contai
   f. Location (street address, state code and country) 
   
   g. Care Provider (individual will have various care providers. There will be a primary doctor, physical therapist, neuro doctor, nanny, speech     therapist) 
+  
+---> functions/createIndividual (solution to above problem)
 
-Write some separate nodejs code to call the api 100 times with different random values call the
 
-in each field. Find some package that creates good real looking fake data and
+2. Write some separate nodejs code to call the api 100 times with different random values call the in each field. Find some package that creates good real looking fake data and above api with the random data.
 
-above api with the random data. 3. On write of this document, there should be a trigger that pushes this doc data to
+---> client/client.js (used falso to create fake data and made 100 post request to createIndividual API)
 
-a
 
-bigquery table. 4. Write an firebase function/api to get all the documents of individuals that enjoy cycling
+3. On write of this document, there should be a trigger that pushes this doc data to a bigquery table. 
 
-and tennis. Use python for that.
-[7:13 pm, 12/02/2023] Shobham Rajak: 1. Build a serverless firebase function/api (use nodejs) that creates a firestore document
+---> functions/pushToBigQuery (wrote a hook, that detects the changes in the collections and further retreives the from firestores and saves it in a bigquerry)
 
-that contains following data for an individual: a. Name
 
-b. Id
+4. Write an firebase function/api to get all the documents of individuals that enjoy cycling and tennis. Use python for that.
 
-c. List of symptoms to track for this individual (headache, hyperactivity, crying,
+---> client/client.py (wrote the method that fetches the data from the collection)
 
-anxiety, depression). This is a master set of symptoms and any given individual
-
-will have few. d. Date of birth Hobbies (list of things individual enjoys. Master list is cycling, tennis, soccer,
-
-running) f. Location (street address, state code and country)
-
-g. Care Provider (individual will have various care providers. There will be a primary
-
-doctor, physical therapist, neuro doctor, nanny, speech therapist)
