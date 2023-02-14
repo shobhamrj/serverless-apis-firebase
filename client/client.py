@@ -7,7 +7,7 @@ def get_individuals():
     try:
         cred = credentials.ApplicationDefault()
         
-        initialize_app(cred, {'projectId': f'{os.getenv(PROJECT_ID,"your-project-id-goes-here")}',})
+        initialize_app(cred, {'projectId': f'{os.getenv("PROJECT_ID","your-project-id-goes-here")}',})
         
         db = firestore.client()
 
@@ -25,4 +25,5 @@ def get_individuals():
         print(e)
 
 
-get_individuals()
+if __name__ == '__main__':
+    get_individuals()
